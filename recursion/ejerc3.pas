@@ -16,8 +16,8 @@ type
 
 	procedure vector20(var vec : vectorNum; var i : integer);
 	begin
-		i := i + 1;
-		if (i <= MAX) then begin
+		if (i < MAX) then begin
+			i := i + 1;
 			vec[i] := random(SUP - INF + 1) + INF;
 			vector20(vec,i);
 		end;
@@ -25,8 +25,8 @@ type
 	
 	procedure imprimirVector(vec : vectorNum; diml : integer; var i : integer);
 	begin
-		i := i + 1;
 		if (i < diml) then begin
+			i := i + 1;
 			writeln('el numero guardado en la posicion ',i,' es: ',vec[i]);
 			imprimirVector(vec,diml,i);
 		end;
@@ -38,7 +38,7 @@ type
 	begin
 		for i := 1 to diml - 1 do begin
 			pos := i;
-			for j := i + 1 to diml do begin
+			for j := i + 1 to diml  do begin
 				if (vec[pos] > vec[j]) then begin
 					pos := j;
 				end;
@@ -55,7 +55,7 @@ type
 var
 
 	vec : vectorNum;
-	diml, i : integer;
+	i, diml : integer;
 
 begin
 	
@@ -68,4 +68,5 @@ begin
 	writeln(' ');
 	i := 0;
 	imprimirVector(vec,diml,i);
+	
 end.
