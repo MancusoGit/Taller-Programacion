@@ -38,7 +38,7 @@ type
 		end;
 	end;
 
-	procedure imprimirLista(var pi : lista);
+	procedure imprimirLista(pi : lista);
 	begin
 		if (pi <> nil) then begin
 			writeln('el numero almacenado es : ',pi^.elem);
@@ -47,7 +47,7 @@ type
 		end;
 	end;
 	
-	procedure listaReversa(var pI,pIR : lista);
+	procedure listaReversa(pI: lista; var pIR : lista);
 	begin
 		if (pI <> nil) then begin
 			agregarAdelante(pIR,pI^.elem);
@@ -56,7 +56,7 @@ type
 		end;
 	end;
 	
-	procedure buscarMinimo(var pI : lista; var minimo: integer);
+	procedure buscarMinimo(pI : lista; var minimo: integer);
 	begin
 		if (pI <> nil) then begin
 			if (pI^.elem < minimo) then
@@ -66,7 +66,7 @@ type
 		end;
 	end;
 	
-	procedure buscarNumero(var pI : lista; num : integer; var encontre : boolean);
+	procedure buscarNumero(pI : lista; num : integer; var encontre : boolean);
 	begin
 		if (pI <> nil) and not encontre then begin
 			if (pI^.elem = num) then begin
@@ -81,7 +81,7 @@ type
 
 var
 
-	pI, aux, pIR : lista;
+	pI, pIR : lista;
 	min : integer;
 	encontre : boolean;
 	
@@ -90,29 +90,24 @@ begin
 	Randomize;
 	pI := nil;
 	cargarLista(pI);
-	aux := pI;
 	writeln('lista original : ');
 	writeln(' ');
-	imprimirLista(aux);
+	imprimirLista(pI);
 	writeln(' ');
-	aux := pI;
 	pIR := nil;
-	listaReversa(aux,pIR);
-	aux := pIR;
+	listaReversa(pI,pIR);
 	writeln('lista reversa : ');
 	writeln(' ');
 	imprimirLista(pIR);
 	writeln(' ');
-	aux := pI;
 	min := 9999;
-	buscarMinimo(aux,min);
+	buscarMinimo(pI,min);
 	writeln('el numero mas chico de la lista es el: ', min);
 	writeln(' ');
 	write('ingrese un numero para buscarlo en la lista: ');
 	readln(min);
-	aux := pI;
 	encontre := false;
-	buscarNumero(aux,min,encontre);
+	buscarNumero(pI,min,encontre);
 	writeln(' ');
 	if encontre then
 		writeln('el numero ',min,' SI estaba en la lista')
@@ -120,3 +115,4 @@ begin
 		writeln('el numero ',min,' NO estaba en la lista')
 		
 end.
+
