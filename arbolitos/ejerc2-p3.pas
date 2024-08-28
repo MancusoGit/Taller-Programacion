@@ -252,6 +252,60 @@ begin
 
 end;
 
+function corroborar(fechaI, fechaC : date) : boolean;
+begin
+	corroborar := ((fechaI.dia = fechaC.dia) and (fechaI.mes = fechaC.mes) and (fechaI.anio = fechaC.anio)); 
+end;
+
+procedure contarFecha(ar : arbol; var cant : integer; fech : date);
+begin
+	if (ar <> nil) then begin
+		contarFecha(ar^.hijoI,cant,fech);
+		if (corroborar(ar^.elem.fecha,fech)) then
+			cant := cant + ar^.elem.unidades;
+		contarFecha(ar^.hijoD,cant,fech);
+	end;
+end;	
+
+procedure mayor(var maxCant : real; var maxCod : integer; cantI : real; codI : integer);
+begin
+	if (cantI >= maxCant) then begin
+		maxCod := codI;
+		maxCant := cantI;
+	end;
+end;
+
+procedure encontrarMayor(ar : arbol2; var codMax : integer; var cantMax : real);
+begin
+	if (ar <> nil) then begin
+		encontrarMayor(ar^.hijoL,codMax,cantMax);
+		mayor(cantMax,codMax,ar^.dato.unidades,ar^.dato.codigo);	
+		encontrarMayor(ar^.hijoR,codMax,cantMax);
+	end;
+end;
+	
+procedure recorrerVentas(pi : listaT; var cantMax : real; var codigoMax : integer);
+var
+	cant : real;
+	cod : integer;
+begin
+	cod := pi^.data.codigo;
+	cant := 0;
+	while (pi <> nil) do begin
+		cant := cant + 1;
+		pi := pi^.sig;
+	end;
+	mayor(cantMax,codigoMax,cant,cod);
+end;
+
+procedure encontrarMaxVentas(ar : arbol3; var codigoMax : integer; var cantMax : real);
+begin
+	if (ar <> nil) then begin
+		encontrarMaxVentas(ar^.hijitoL,codigoMax,cantMax);
+		recorrerVentas(ar^.storage.ventas,cantMax,codigoMax);
+		encontrarMaxVentas(ar^.hijitoR,codigoMax,cantMax);
+	end;
+end;
 
 //programa principal
 
@@ -260,10 +314,33 @@ var
 	ar1 : arbol;
 	ar2 : arbol2;
 	ar3 : arbol3;
+	fec : date;
+	cant, codMax : integer;
+	cantMax : real;
 
 begin
 
 	Randomize;
 	generarArboles(ar1,ar2,ar3);
+	write('ingrese el dia: ');
+	readln(fec.dia);
+	write('ingrese el mes: ');
+	readln(fec.mes);
+	write('ingrese el anio: ');
+	readln(fec.anio);
+	cant := 0;
+	contarFecha(ar1,cant,fec);
+	writeln(' ');
+	writeln('en la fecha ',fec.dia,'/',fec.mes,'/',fec.anio,' se compraron un total de ',cant,' productos.');
+	cantMax := -9999;
+	codMax := 0;
+	encontrarMayor(ar2,codMax,cantMax);
+	writeln(' ');
+	writeln('el producto con mayor cantidad de unidades vendidas es el prod. codigo -> ',codMax,', con una cantidad de : ',cantMax:0:0,' unidades vendidas');
+	cantMax := -9999;
+	codMax := 0;
+	encontrarMaxVentas(ar3,codMax,cantMax);
+	writeln(' ');
+	writeln('el producto con mayor cantidad de ventas es el prod. codigo -> ',codMax,', con una cantidad de : ',cantMax:0:0,' ventas');
 	
 end.
