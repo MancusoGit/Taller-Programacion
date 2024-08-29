@@ -75,7 +75,7 @@ type
 	
 	procedure leerFinal(var f : final);
 	begin
-		f.lega := random(9000);
+		f.lega := random(1000);
 		if (f.lega <> LEGAJO_CORTE) then begin
 			f.codigoMateria := random(400) + 1;
 			f.nota := random(10) + 1;
@@ -185,9 +185,55 @@ type
 		end;
 	end;
 	
+	procedure agregarAdelante2(var pi : listaT; aluResu : alumnoResumen);
+	var
+		nue : listaT;
+	begin
+		new(nue);
+		nue^.dato := aluResu;
+		nue^.next := pi;
+		pi := nue;
+	end;
 	
+	procedure verificarPromedio(a : alumno; filtro : real ; var pi : listaT);
+	var
+		aluRes : alumnoResumen;
+		prom : real;
+		cantFinales : integer;
+	begin
+		cantFinales := 0;
+		prom := 0;
+		while (a.finales <> nil) do begin
+			cantFinales := cantFinales + 1;
+			prom := prom + a.finales^.dato.nota;
+			a.finales := a.finales^.sig;
+		end;
+		prom := prom/cantFinales;
+		if (prom > filtro) then begin
+			aluRes.legajo := a.legajo;
+			aluRes.promedio := prom;
+			agregarAdelante2(pi,aluRes);
+		end;
+	end;
 	
+	procedure filtrarPromedios(ar : arbol; filtro : real; var pi : listaT);
+	begin
+		if (ar <> nil) then begin
+			filtrarPromedios(ar^.hijoI,filtro,pi);
+			verificarPromedio(ar^.elem,filtro,pi);
+			filtrarPromedios(ar^.hijoD,filtro,pi);
+		end;
+	end;
 	
+	procedure informarPromedios(pi : listaT; filtro : real);
+	begin
+		while (pi <> nil) do begin
+			writeln('el alumno con legajo -> ',pi^.dato.legajo,', supero el filtro de promedios(',filtro:0:0,'), con un promedio de: ',pi^.dato.promedio:0:0);
+			writeln(' ');
+			writeln('----------------------------------------------------------');
+			pi := pi^.next;
+		end;
+	end;
 	
 	//programa principal
 	
@@ -196,6 +242,7 @@ type
 		ar : arbol;
 		cantImpares : integer;
 		num : real;
+		listaCracks : listaT;
 		
 	begin
 	
@@ -211,7 +258,10 @@ type
 		writeln(' ');
 		write('ingrese un numero para corroborar los promedios: ');
 		readln(num);
-		
+		listaCracks := nil;
+		filtrarPromedios(ar,num,listaCracks);
+		writeln(' ');
+		informarPromedios(listaCracks,num);
 		
 	end.
  
