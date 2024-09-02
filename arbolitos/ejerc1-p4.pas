@@ -103,13 +103,13 @@ type
 	procedure codigosRango(ar : arbol; limInf, limSup : integer; var cant : integer);
 	begin
 		if (ar <> nil) then begin
-			if (ar^.dato.producto >= limInf) and (ar^.dato.codigo =< limSup) then begin
-				if (ar^.dato.producto > limInf) and (ar^.dato.producto < limSup) then
+			if (ar^.dato.codigo >= limInf) and (ar^.dato.codigo <= limSup) then begin
+				if (ar^.dato.codigo > limInf) and (ar^.dato.codigo < limSup) then
 					cant := cant + 1;
 				codigosRango(ar^.hijoI,limInf,limSup,cant);
 				codigosRango(ar^.hijoD,limInf,limSup,cant);
 			end
-			else if (ar^.dato.producto > limSup) then
+			else if (ar^.dato.codigo > limSup) then
 				codigosRango(ar^.hijoI,limInf,limSup,cant)
 			else
 				codigosRango(ar^.hijoD,limInf,limSup,cant)
@@ -121,7 +121,7 @@ type
 var
 
 	root : arbol;
-	cant, num : integer;
+	cant, num, cantidad, limInf, limSup, aux : integer;
 
 begin
 
@@ -131,10 +131,25 @@ begin
 	mostrarArbol(root);
 	writeln(' ');
 	writeln('el codigo de producto mas chico es: ',minimo(root));
-	num := 30;
+	num := random(900);
 	cant := 0;
 	masChicosPorParametro(root,num,cant);
 	writeln(' ');
 	writeln('la cantidad de codigos menores a ',num,' es: ',cant);
+	writeln(' ');
+	write('ingrese el primer numero del subrango: ');
+	readln(limInf);
+	writeln(' ');
+	write('ingrese el primer numero del subrango: ');
+	readln(limSup);
+	if (limInf > limSup) then begin
+		aux := limSup;
+		limSup := limInf;
+		limInf :=aux;
+	end;
+	cantidad := 0;
+	codigosRango(root,limInf,limSup,cantidad);
+	writeln(' ');
+	writeln('el numero de codigos que se encuentran en el rango de ',limInf, ' y ',limSup,' es: ',cantidad);
 	
 end.
