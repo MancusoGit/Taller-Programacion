@@ -46,7 +46,7 @@ type
 	procedure leerReclamo(var r : reclamo);
 	begin
 		r.codigo := random(100);
-		if (r.codigo <> 0) then begin
+		if (r.codigo <> CORTE) then begin
 			r.documento := random(900) + 1;
 			r.anio := random(2024 - 1980 + 1) + 1980;
 			r.tipo := random(10) + 1;
@@ -89,7 +89,7 @@ type
 		r : reclamo;
 	begin
 		leerReclamo(r);
-		if (r.codigo <> 0) then begin
+		if (r.codigo <> CORTE) then begin
 			cargarDatos(ar,r);
 			cargarArbol(ar);
 		end;
