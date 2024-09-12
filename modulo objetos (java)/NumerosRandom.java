@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class NumRandom {
+public class NumerosRandom {
 
     public static void main(String[] args) {
         
