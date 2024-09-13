@@ -116,6 +116,8 @@ public class Matriz {
         } else {
             System.out.println("el numero " + valor + " NO se encuentra en la matriz.");
         }
-        
+
+        System.out.println("-------------------------------------------------------------------------------------");
     }
     
+}
