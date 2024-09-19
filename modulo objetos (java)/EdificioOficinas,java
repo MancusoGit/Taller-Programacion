@@ -1,0 +1,42 @@
+package tema1;
+
+
+import PaqueteLectura.GeneradorAleatorio;
+import PaqueteLectura.Lector; 
+
+public class EdificioOficinas {
+
+	public static void main(String[] args) {
+		
+		final int PISOS = 8;
+		
+		final int OFICINAS = 4;
+		
+		int[][] edificio = new int [8][4];
+
+		System.out.print("ingrese el piso deseado : ");
+		
+		int solicitudPiso = Lector.leerInt();
+		
+		while (!(solicitudPiso == 9)) {
+			int solicitudOficina = GeneradorAleatorio.generarInt(4);
+			edificio [solicitudPiso-1][solicitudOficina] += 1;	
+			System.out.print("ingrese el piso deseado : ");
+			solicitudPiso = Lector.leerInt();
+		}
+		
+		System.out.println();
+		System.out.println("--------------------------------------------------------------------------------------------");
+		
+		for (int i = 0; i < PISOS; i++) {
+			for (int j = 0; j < OFICINAS; j++) {
+				System.out.println("la cantidad de personas que acudieron al piso " + (i+1) + " y a la oficina " + (j+1) + " son : " + edificio[i][j]);
+				System.out.println();
+			}
+			System.out.println("--------------------------------------------------------------------------------------------");
+		}
+		
+		
+	}
+	
+}
