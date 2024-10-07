@@ -36,5 +36,9 @@ public abstract class Persona {
     private void setEdad(int edad) {
         this.edad = edad;
     }
+
+    public String toString() {
+        return nombre + ", dni : " + DNI + ", edad : " + edad;
+    }
     
 }
