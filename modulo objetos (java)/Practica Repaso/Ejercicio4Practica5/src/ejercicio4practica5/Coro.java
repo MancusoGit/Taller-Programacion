@@ -34,7 +34,7 @@ public abstract class Coro {
         this.directorCoro = direct;
     } 
     
-    public abstract void agregarCorista();
+    public abstract void agregarCorista(Corista unCorista);
     
     public abstract boolean coroLleno();
     
