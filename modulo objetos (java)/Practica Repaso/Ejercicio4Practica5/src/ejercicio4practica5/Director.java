@@ -17,5 +17,10 @@ public class Director extends Persona {
     private void setAntiguedad(int antiguedad) {
         this.antiguedad = antiguedad;
     }
+
+    @Override
+    public String toString() {
+        return "Director/a " + super.toString() + ", mi antiguedad es de : " + antiguedad;
+    }
     
 }
