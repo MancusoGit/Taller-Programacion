@@ -17,5 +17,9 @@ public class Corista extends Persona {
     private void setTonoFundamental(int tono) {
         this.tonoFundamental = tono;
     }
+
+    public String toString() {
+        return "Corista " + super.toString() + ", mi tono fundamental es : " + tonoFundamental + "\n";
+    }
     
 }
