@@ -36,4 +36,12 @@ public abstract class Coro {
     
     public abstract void agregarCorista();
     
+    public abstract boolean coroLleno();
+    
+    public abstract boolean coroOrdenado();
+    
+    @Override
+    public String toString() {
+        return "Coro = " + nombreCoro + "\n" + directorCoro.toString() + "\n";
+    }
 }
