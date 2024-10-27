@@ -1,21 +1,22 @@
-programa ejemplo
+programa e3p4
 procesos
   proceso trayecto
   variables
-    cantPapeles : numero
+    paps : numero
   comenzar
-    cantPapeles := 0
-    repetir 4
-      repetir 20
-        mientras (HayPapelEnLaEsquina)
-          tomarPapel
-          cantPapeles := cantPapeles + 1
-        mover
-      derecha
-    Informar(cantPapeles)
+    paps:= 0
+    repetir 19
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        paps:= paps+1
+      mover
+    Informar(paps)
   fin
 areas
-  ciudad: AreaC (1,1,100,100)
+  areaR1: AreaP(10,10,10,29)
+  areaR2: AreaP(10,30,29,30)
+  areaR3: AreaP(30,11,30,30)
+  areaR4: AreaP(11,10,30,10)
 robots
   robot robot1
   comenzar
@@ -39,17 +40,17 @@ robots
     trayecto
   fin
 variables
-  R2D2: robot1
-  C3PO: robot2
+  r1: robot1
+  r2: robot2
   r3: robot3
   r4: robot4
 comenzar
-  AsignarArea(R2D2, ciudad)
-  AsignarArea(C3PO, ciudad)
-  AsignarArea(r3, ciudad)
-  AsignarArea(r4, ciudad)
-  Iniciar(R2D2, 10, 10)
-  Iniciar(C3PO, 10, 30)
-  Iniciar(r3, 30, 30) 
-  Iniciar(r4, 30, 10)  
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  Iniciar(r1,10,10)
+  Iniciar(r2,10,30)
+  Iniciar(r3,30,30)
+  Iniciar(r4,30,10)
 fin
