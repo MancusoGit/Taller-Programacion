@@ -19,7 +19,7 @@ procesos
     si(paps = (flo+1))
       esqOK:= esqOk+1
   fin
-  proceso escalon(E largo: numero; ES esqOK: numero)
+  proceso escalon(ES esqOK: numero; E largo: numero)
   comenzar
     repetir 2
       repetir largo
@@ -37,7 +37,7 @@ procesos
     esquinasOK:= 0
     lado:= 1
     repetir 4
-      escalon(lado,esquinasOK)
+      escalon(esquinasOK,lado)
       lado:= lado+1
     Informar(esquinasOK)
   fin
@@ -52,5 +52,9 @@ variables
   r1,r2,r3: robot1
 comenzar
   AsignarArea(r1,city)
-  Iniciar(r1,1,1)
+  AsignarArea(r2,city)
+  AsignarArea(r3,city)
+  Iniciar(r1,12,14)
+  Iniciar(r2,17,10)
+  Iniciar(r3,22,6)
 fin
