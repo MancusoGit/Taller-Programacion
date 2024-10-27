@@ -1,0 +1,56 @@
+programa ej3p1
+procesos
+  proceso procesarEsquina(ES esqOK: numero)
+  variables
+    paps, flo: numero
+  comenzar
+    paps:= 0
+    flo:= 0
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      paps:= paps+1
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flo:= flo+1
+    repetir paps
+      depositarPapel
+    repetir flo
+      depositarFlor
+    si(paps = (flo+1))
+      esqOK:= esqOk+1
+  fin
+  proceso escalon(E largo: numero; ES esqOK: numero)
+  comenzar
+    repetir 2
+      repetir largo
+        procesarEsquina(esqOK)
+        mover
+      derecha
+    repetir 2
+      derecha
+  fin
+  proceso escalera
+  variables
+    esquinasOK: numero
+    lado: numero
+  comenzar
+    esquinasOK:= 0
+    lado:= 1
+    repetir 4
+      escalon(lado,esquinasOK)
+      lado:= lado+1
+    Informar(esquinasOK)
+  fin
+areas
+  city: AreaC(1,1,100,100)
+robots
+  robot robot1
+  comenzar
+    escalera
+  fin
+variables
+  r1,r2,r3: robot1
+comenzar
+  AsignarArea(r1,city)
+  Iniciar(r1,1,1)
+fin
