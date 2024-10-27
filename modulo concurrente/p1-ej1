@@ -1,0 +1,45 @@
+programa ej1p1
+procesos
+  proceso recorrer
+  variables
+    flo: numero
+    cantNOflo: numero
+  comenzar
+    flo:= 0
+    cantNOflo:= 0
+    repetir 99
+      si(HayFlorEnLaEsquina)
+        mientras(HayFlorEnLaEsquina)
+          tomarFlor
+          flo:= flo+1
+      sino
+        cantNOflo:= cantNOflo+1
+      mover
+    si(HayFlorEnLaEsquina)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flo:= flo+1
+    sino
+      cantNOflo:= cantNOflo+1
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    Informar(flo)
+    Informar(cantNOflo)
+  fin
+areas
+  areaR1: AreaC(1,1,100,100)
+robots
+  robot robot1
+  comenzar
+    recorrer
+  fin
+variables
+  r1,r2,r3: robot1
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR1)
+  AsignarArea(r3,areaR1)
+  Iniciar(r1,1,1)
+  Iniciar(r2,3,1)
+  Iniciar(r3,5,1)
+fin
