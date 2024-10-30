@@ -1,0 +1,61 @@
+programa ej1P2
+procesos
+  proceso juntarFlores(ES flo: numero)
+  comenzar
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flo:= flo + 1
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flo := flo + 1
+  fin
+areas
+  areaR3: AreaP(2,1,2,1)
+  areaR1: AreaP(1,1,1,10)
+  areaR2: AreaP(2,11,2,20)
+robots
+  robot juntador
+  variables
+    flo, dif: numero
+    ganador: boolean
+  comenzar
+    flo:= 0
+    ganador:= F
+    juntarFlores(flo)
+    EnviarMensaje(flo,r3)
+    RecibirMensaje(ganador,r3)
+    si(ganador)
+      RecibirMensaje(dif,r3)
+      Informar(dif)
+  fin
+  robot fiscalizador
+  variables
+    cantR1, cantR2, aux: numero
+  comenzar
+    RecibirMensaje(cantR1, r1)
+    RecibirMensaje(cantR2, r2)
+    si(cantR1 > cantR2)
+      aux:= cantR1 - cantR2
+      EnviarMensaje(V,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(aux,r1)
+    sino
+      aux:= cantR2-cantR1
+      EnviarMensaje(V,r2)
+      EnviarMensaje(F,r1)
+      EnviarMensaje(aux,r2)
+  fin
+variables
+  r1: juntador
+  r2: juntador
+  r3: fiscalizador
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,11)
+  Iniciar(r3,2,1)
+fin
