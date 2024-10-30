@@ -1,0 +1,76 @@
+programa ej2p2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1  
+  fin
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso escalon(ES cant: numero)
+  variables
+    flo, pap, pasos: numero
+  comenzar
+    flo:= 0
+    pap:= 0
+    Random(pasos,1,5)
+    juntarFlores(flo)
+    juntarPapeles(pap)
+    repetir pasos
+      mover
+      juntarFlores(flo)
+      juntarPapeles(pap)
+    derecha
+    mover
+    izquierda
+    si(flo > pap)
+      cant:=cant+1
+  fin
+areas
+  areaR1: AreaP(2,1,6,21)
+  areaR2: AreaP(7,1,11,21)
+  areaR3: AreaP(12,1,16,21)
+  areaR4: AreaP(1,1,1,1)
+robots
+  robot juntador
+  variables
+    cant: numero
+  comenzar
+    cant:= 0
+    repetir 4
+      escalon(cant)
+    EnviarMensaje(cant,r4)
+  fin
+  robot jefe
+  variables
+    total, ingresa: numero
+  comenzar
+    total:= 0
+    repetir 3
+      RecibirMensaje(ingresa,*)
+      total:= total + ingresa
+    Informar(total)
+  fin
+variables
+  r1,r2,r3: juntador
+  r4: jefe
+comenzar
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  Iniciar(r1,2,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,12,1)
+  Iniciar(r4,1,1)
+fin
