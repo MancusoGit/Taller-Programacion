@@ -29,6 +29,10 @@ robots
   comenzar
     cantMax:=-1
     robotMax:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
     repetir 10
       Random(aux,1,4)
       si(aux = 1)
@@ -53,38 +57,20 @@ robots
     EnviarMensaje(F,r2)
     EnviarMensaje(F,r3)
     EnviarMensaje(F,r4)
-    si (robotMax = 1)
-      EnviarMensaje(F,r2)
-      EnviarMensaje(F,r3)
-      EnviarMensaje(F,r4)
-      EnviarMensaje(V,r1)
-    sino
-      si(robotMax = 2)
-        EnviarMensaje(F,r1)
-        EnviarMensaje(F,r3)
-        EnviarMensaje(F,r4)
-        EnviarMensaje(V,r2)
-      sino
-        si(robotMax = 3)
-          EnviarMensaje(F,r2)
-          EnviarMensaje(F,r1)
-          EnviarMensaje(F,r4)
-          EnviarMensaje(V,r3)
-        sino
-          EnviarMensaje(F,r2)
-          EnviarMensaje(F,r3)
-          EnviarMensaje(F,r1)
-          EnviarMensaje(V,r4)             
+    EnviarMensaje(robotMax,r1)
+    EnviarMensaje(robotMax,r2)
+    EnviarMensaje(robotMax,r3)
+    EnviarMensaje(robotMax,r4)         
   fin
   robot juntador
   variables
-    total,av,ca,avi,cai: numero
-    sigo, ganador: boolean
+    total,av,ca,avi,cai,id,win: numero
+    sigo: boolean
   comenzar
-    ganador:= F
     avi:= PosAv
     cai:= PosCa
     total:=0
+    RecibirMensaje(id,rf)
     RecibirMensaje(sigo,rf)
     mientras(sigo)
       Random(av,25,75)
@@ -94,8 +80,112 @@ robots
       Pos(avi,cai)
       EnviarMensaje(total,rf)
       RecibirMensaje(sigo,rf)
-    RecibirMensaje(ganador,rf)
-    si(ganador)
+    RecibirMensaje(win,rf)
+    si(win = id)
+      Pos(50,50)
+  fin
+variables
+  r1,r2,r3,r4: juntador
+  rf: fiscalizador
+comenzar
+  AsignarArea(rf,areaRF)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  AsignarArea(r1,cuadrante)
+  AsignarArea(r2,cuadrante)
+  AsignarArea(r3,cuadrante)
+  AsignarArea(r4,cuadrante)
+  Iniciar(rf,1,1)
+  Iniciar(r1,25,1)
+  Iniciar(r2,30,1)
+  Iniciar(r3,35,1)
+  Iniciar(r4,40,1)
+finprograma ej4p2
+procesos
+  proceso juntarFloresPapeles(ES t : numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      t:=t+1
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      t:=t+1
+  fin
+  proceso max(ES cantMax: numero;ES robotMax: numero; E cantIng: numero;E robotIng: numero)
+  comenzar
+    si(cantIng > cantMax)
+      cantMax:= cantIng
+      robotMax:= robotIng
+  fin
+areas
+  cuadrante: AreaPC(25,25,75,75)
+  areaRF: AreaP(1,1,1,1)
+  areaR1: AreaP(25,1,25,1)
+  areaR2: AreaP(30,1,30,1)
+  areaR3: AreaP(35,1,35,1)
+  areaR4: AreaP(40,1,40,1)
+robots
+  robot fiscalizador
+  variables
+    aux,cantMax,robotMax,cantAux: numero
+  comenzar
+    cantMax:=-1
+    robotMax:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    repetir 10
+      Random(aux,1,4)
+      si(aux = 1)
+        EnviarMensaje(V,r1)
+        RecibirMensaje(cantAux,r1)
+        max(cantMax,robotMax,cantAux,aux)
+      sino
+        si(aux = 2)
+          EnviarMensaje(V,r2)
+          RecibirMensaje(cantAux,r2)
+          max(cantMax,robotMax,cantAux,aux)
+        sino
+          si(aux = 3)
+            EnviarMensaje(V,r3)
+            RecibirMensaje(cantAux,r3)
+            max(cantMax,robotMax,cantAux,aux)
+          sino
+            EnviarMensaje(V,r4)
+            RecibirMensaje(cantAux,r4)
+            max(cantMax,robotMax,cantAux,aux)
+    EnviarMensaje(F,r1)
+    EnviarMensaje(F,r2)
+    EnviarMensaje(F,r3)
+    EnviarMensaje(F,r4)
+    EnviarMensaje(robotMax,r1)
+    EnviarMensaje(robotMax,r2)
+    EnviarMensaje(robotMax,r3)
+    EnviarMensaje(robotMax,r4)         
+  fin
+  robot juntador
+  variables
+    total,av,ca,avi,cai,id,win: numero
+    sigo: boolean
+  comenzar
+    avi:= PosAv
+    cai:= PosCa
+    total:=0
+    RecibirMensaje(id,rf)
+    RecibirMensaje(sigo,rf)
+    mientras(sigo)
+      Random(av,25,75)
+      Random(ca,25,75)
+      Pos(av,ca)
+      juntarFloresPapeles(total)
+      Pos(avi,cai)
+      EnviarMensaje(total,rf)
+      RecibirMensaje(sigo,rf)
+    RecibirMensaje(win,rf)
+    si(win = id)
       Pos(50,50)
   fin
 variables
