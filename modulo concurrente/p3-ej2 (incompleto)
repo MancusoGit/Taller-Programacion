@@ -1,5 +1,10 @@
 programa e2p3
 procesos
+  proceso acomodar
+  comenzar
+    repetir 2
+      derecha
+  fin
   proceso izquierda
   comenzar
     repetir 3
@@ -17,51 +22,117 @@ procesos
       tomarPapel
       p:=p+1
   fin
-  proceso recorrido(ES data: numero)
+  proceso recorridoIzq(ES data: numero)
   variables
     lado: numero
   comenzar
     lado:= 5
+    juntarFlores(data)
     repetir 4
-      repetir lado
-        mover
-      juntarFlores(data)
-      derecha
-      repetir lado
-        mover
-      juntarFlores(data)
-      izquierda
+      repetir 2
+        repetir lado
+          mover
+        juntarFlores(data)
+        derecha
+      acomodar
       lado:=lado-1
     mover
     juntarFlores(data)
-    izquierda
+    derecha
+    BloquearEsquina(16,16)
+    mover
+    juntarFlores(data)
+    EnviarMensaje(1,rf)
+    Pos(15,16)
+    LiberarEsquina(16,16)
+    acomodar
     lado:=lado+1
     repetir 4
-      repetir lado
-        mover
-      juntarFlores(data)
-      derecha
-      repetir lado
-        mover
-      juntarFlores(data)
-      izquierda
+      repetir 2
+        repetir lado
+          mover
+        juntarFlores(data)
+        derecha
+      acomodar
       lado:=lado+1
+    EnviarMensaje(0,rf)
+  fin
+  proceso recorridoDer(ES data: numero)
+  variables
+    lado: numero
+  comenzar
+    lado:= 5
+    juntarPapeles(data)
+    repetir 4
+      repetir 2
+        repetir lado
+          mover
+        juntarPapeles(data)
+        izquierda
+      acomodar
+      lado:=lado-1
+    mover
+    juntarPapeles(data)
+    izquierda
+    BloquearEsquina(16,16)
+    mover
+    juntarPapeles(data)
+    EnviarMensaje(2,rf)
+    Pos(17,16)
+    LiberarEsquina(16,16)
+    acomodar
+    lado:= lado+1
+    repetir 4
+      repetir 2
+        repetir lado
+          mover
+        juntarPapeles(data)
+        izquierda
+      acomodar
+    EnviarMensaje(0,rf)
   fin
 areas
   areaR1: AreaP(1,1,15,30)
   areaR2: AreaP(17,1,31,30)
+  areaConfli: AreaPC(16,16,16,16)
   areaF: AreaP(99,1,99,1)
 robots
-  robot robot1
+  robot florero
   variables
     flo: numero
   comenzar
-    recorrido(flo)
+    flo:=0
+    recorridoIzq(flo)
     Informar(flo)
   fin
+  robot papelero
+  variables
+    pap: numero
+  comenzar
+    pap:=0
+    recorridoDer(pap)
+    Informar(pap)
+  fin
+  robot fiscalizador
+  variables
+    llegoPri,aux: numero
+  comenzar
+    RecibirMensaje(llegoPri,*)
+    repetir 3
+      RecibirMensaje(aux,*)
+    Informar(llegoPri)
+  fin
 variables
-  r1: robot1
+  r1: florero
+  r2: papelero
+  rf: fiscalizador
 comenzar
   AsignarArea(r1,areaR1)
+  AsignarArea(r1,areaConfli)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r2,areaConfli)
+  AsignarArea(rf,areaF)
+  Iniciar(rf,99,1)
   Iniciar(r1,1,1)
+  Iniciar(r2,31,1)
 fin
