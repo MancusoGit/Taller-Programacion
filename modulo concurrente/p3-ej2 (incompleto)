@@ -1,0 +1,67 @@
+programa e2p3
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso recorrido(ES data: numero)
+  variables
+    lado: numero
+  comenzar
+    lado:= 5
+    repetir 4
+      repetir lado
+        mover
+      juntarFlores(data)
+      derecha
+      repetir lado
+        mover
+      juntarFlores(data)
+      izquierda
+      lado:=lado-1
+    mover
+    juntarFlores(data)
+    izquierda
+    lado:=lado+1
+    repetir 4
+      repetir lado
+        mover
+      juntarFlores(data)
+      derecha
+      repetir lado
+        mover
+      juntarFlores(data)
+      izquierda
+      lado:=lado+1
+  fin
+areas
+  areaR1: AreaP(1,1,15,30)
+  areaR2: AreaP(17,1,31,30)
+  areaF: AreaP(99,1,99,1)
+robots
+  robot robot1
+  variables
+    flo: numero
+  comenzar
+    recorrido(flo)
+    Informar(flo)
+  fin
+variables
+  r1: robot1
+comenzar
+  AsignarArea(r1,areaR1)
+  Iniciar(r1,1,1)
+fin
