@@ -1,0 +1,90 @@
+programa e4p3
+procesos
+  proceso maximo(ES maxId: numero; ES maxCant: numero; E ingId: numero; E ingCant: numero)
+  comenzar
+    si(ingCant>maxCant)
+      maxCant:=ingCant
+      maxId:=ingId
+  fin
+areas
+  areaRecoleccion: AreaPC(11,11,11,11)
+  areaR1: AreaP(4,1,4,100)
+  areaR2: AreaP(6,1,6,100)
+  areaR3: AreaP(8,1,8,100)
+  areaR4: AreaP(10,1,10,100)
+  areaC: AreaP(1,1,1,1)
+robots
+  robot corredor
+  variables
+    avIni,caIni,avUlt,caUlt,cantPap,id: numero
+    sigo: boolean
+  comenzar
+    avIni:=PosAv
+    caIni:=PosCa
+    avUlt:=PosAv
+    caUlt:=PosCa
+    sigo:=V
+    RecibirMensaje(id,rc)
+    mientras((caUlt<100)&(sigo))
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si(HayPapelEnLaEsquina)   
+        tomarPapel
+      sino
+        sigo:=F
+      Pos(avIni,caIni)
+      LiberarEsquina(11,11)
+      si(sigo)
+        si(HayPapelEnLaBolsa)
+          depositarPapel
+        Pos(avUlt,caUlt)
+        mover
+        avUlt:=PosAv
+        caUlt:=PosCa
+    EnviarMensaje(id,rc)
+    EnviarMensaje(caUlt,rc)
+  fin
+  robot coordinador
+  variables
+    maxDistancia,maxID,ingID,ingDist: numero
+  comenzar
+    maxDistancia:=-1
+    maxID:=0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+    repetir 4
+      RecibirMensaje(ingID,*)
+      si(ingID=1)
+        RecibirMensaje(ingDist,r1)
+      sino
+        si(ingID=2)
+          RecibirMensaje(ingDist,r2)
+        sino
+          si(ingID=3)
+            RecibirMensaje(ingDist,r3)
+          sino
+            RecibirMensaje(ingDist,r4)
+      maximo(maxID,maxDistancia,ingID,ingDist)
+    Informar(maxID)
+  fin
+variables
+  r1,r2,r3,r4: corredor
+  rc: coordinador
+comenzar
+  AsignarArea(rc,areaC)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  AsignarArea(r4,areaR4)
+  AsignarArea(r1,areaRecoleccion)
+  AsignarArea(r2,areaRecoleccion)
+  AsignarArea(r3,areaRecoleccion)
+  AsignarArea(r4,areaRecoleccion)
+  Iniciar(rc,1,1)
+  Iniciar(r1,4,1)
+  Iniciar(r2,6,1)
+  Iniciar(r3,8,1)
+  Iniciar(r4,10,1)   
+fin
