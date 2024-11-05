@@ -1,0 +1,196 @@
+programa e6p3
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso zonaConflictoR1(ES lado: numero; E a: numero; E c: numero)
+  comenzar
+    juntarFlores
+    BloquearEsquina(a,c)
+    mover
+    juntarFlores
+    mover
+    LiberarEsquina(a,c)
+    lado:=lado-1
+  fin
+  proceso zonaConflictoR2(ES lado: numero; E a: numero; E c: numero)
+  comenzar
+    juntarFlores
+    juntarPapeles
+    BloquearEsquina(a,c)
+    mover
+    juntarFlores
+    juntarPapeles
+    mover
+    LiberarEsquina(a,c)
+    lado:=lado-1
+  fin
+  proceso zonaConflictoR3(ES lado: numero; E a: numero; E c: numero)
+  comenzar
+    juntarPapeles
+    BloquearEsquina(a,c)
+    mover
+    juntarPapeles
+    mover
+    LiberarEsquina(a,c)
+    lado:=lado-1
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot recolectorF
+  variables
+    id,lado,calle: numero
+  comenzar
+    RecibirMensaje(id,rf)
+    repetir 4
+      lado:=6
+      repetir lado
+        si((PosAv=8)&((PosCa-1)=5))
+          zonaConflictoR1(lado,8,5)
+        sino
+          si(((PosAv+1)=5)&(PosCa=8))
+            zonaConflictoR1(lado,5,8)
+          sino
+            juntarFlores
+            mover
+      juntarFlores
+      derecha
+    EnviarMensaje(id,rf)
+    RecibirMensaje(calle,rf)
+    Pos(1,calle)
+    derecha
+    si(HayFlorEnLaBolsa)
+      depositarFlor
+    mientras(PosAv<100)&(HayFlorEnLaBolsa)
+      mover
+      depositarFlor
+  fin
+  robot recolectorFP
+  variables
+    id,lado,calle: numero
+  comenzar
+    RecibirMensaje(id,rf)
+    repetir 4
+      lado:=10
+      repetir lado
+        si((PosAv=5)&(PosCa+1)=8)
+          zonaConflictoR2(lado,5,8)
+        sino
+          si(((PosAv+1)=9)&(PosCa=15))
+            zonaConflictoR2(lado,5,15)
+          sino
+            si((PosAv=15)&((PosCa-1)=9))
+              zonaConflictoR2(lado,15,9)
+            sino
+              si(((PosAv-1)=8)&(PosCa=5))
+                zonaConflictoR2(lado,8,5)
+              sino
+                juntarFlores
+                juntarPapeles
+                mover
+      juntarFlores
+      juntarPapeles
+      derecha
+    EnviarMensaje(id,rf)
+    RecibirMensaje(calle,rf)
+    Pos(1,calle)
+    derecha
+    si(HayFlorEnLaBolsa)
+      depositarFlor
+    si(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras((PosAv<100)&((HayFlorEnLaBolsa)|(HayPapelEnLaBolsa)))
+      mover
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+  fin
+  robot recolectorP
+  variables
+    id,lado,calle: numero
+  comenzar
+    RecibirMensaje(id,rf)
+    repetir 4
+      lado:=7
+      repetir lado
+        si((PosAv=9)&((PosCa+1)=15))
+          zonaConflictoR3(lado,9,15)
+        sino
+          si(((PosAv-1)=15)&(PosCa=9))
+            zonaConflictoR3(lado,15,9)
+          sino
+            juntarPapeles
+            mover
+      juntarPapeles
+      derecha
+    EnviarMensaje(id,rf)
+    RecibirMensaje(calle,rf)
+    Pos(1,calle)
+    derecha
+    si(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras((PosAv<100)&(HayPapelEnLaBolsa))
+      mover
+      depositarPapel    
+  fin
+  robot fiscalizador
+  variables
+    ingID,cant: numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    cant:=0
+    repetir 3
+      RecibirMensaje(ingID,*)
+      cant:=cant+1
+      si(ingID=1)
+        si(cant=1)
+          EnviarMensaje(20,r1)
+        sino
+          si(cant=2)
+            EnviarMensaje(21,r1)
+          sino
+            EnviarMensaje(22,r1)
+      sino
+        si(ingID=2)
+          si(cant=1)
+            EnviarMensaje(20,r2)
+          sino
+            si(cant=2)
+              EnviarMensaje(21,r2)
+            sino
+              EnviarMensaje(22,r2)
+        sino
+          si(cant=1)
+            EnviarMensaje(20,r3)
+          sino
+            si(cant=2)
+              EnviarMensaje(21,r3)
+            sino
+              EnviarMensaje(22,r3)
+  fin
+variables
+  r1: recolectorF
+  r2: recolectorFP
+  r3: recolectorP
+  rf: fiscalizador
+comenzar
+  AsignarArea(rf,ciudad)
+  AsignarArea(r1,ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  Iniciar(rf,1,1)
+  Iniciar(r1,2,2)
+  Iniciar(r2,5,5)
+  Iniciar(r3,9,9)
+fin
