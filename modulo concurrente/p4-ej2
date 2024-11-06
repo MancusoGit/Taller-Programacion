@@ -1,0 +1,83 @@
+programa e2p4
+procesos
+  proceso depositarPapeles(E a: numero; E c: numero)
+  variables
+    avIni,caIni: numero
+  comenzar
+    avIni:=PosAv
+    caIni:=PosCa
+    BloquearEsquina(a,c)
+    Pos(a,c)
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    Pos(avIni,caIni)
+    LiberarEsquina(a,c)
+  fin
+areas
+  areaP1: AreaP(5,1,5,100)
+  areaP2: AreaP(10,1,10,100)
+  areaDeposito: AreaC(50,50,50,50)
+  areaC1: AreaP(11,1,11,1)
+  areaC2: AreaP(12,1,12,1)
+robots
+  robot productor
+  variables
+    pap: numero
+  comenzar
+    pap:=0
+    mientras(PosCa<100)
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        pap:=pap+1
+        si(pap=5)
+          depositarPapeles(50,50)
+          pap:=0
+      mover
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      pap:=pap+1
+      si(pap=5)
+        depositarPapeles(50,50)
+        pap:=0
+  fin
+  robot consumidor
+  variables
+    paps,intentos,avIni,caIni,papsJuntados: numero
+  comenzar
+    intentos:=0
+    avIni:=PosAv
+    caIni:=PosCa
+    Random(paps,2,5)
+    mientras(intentos<>8)
+      papsJuntados:=0
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      mientras((HayPapelEnLaEsquina)&(papsJuntados<>paps))
+        tomarPapel
+        papsJuntados:=papsJuntados+1
+      si(papsJuntados<>paps)
+        mientras(HayPapelEnLaBolsa)
+          depositarPapel
+        intentos:=intentos + 1
+      Pos(avIni,caIni)
+      LiberarEsquina(50,50)
+      mientras(HayPapelEnLaBolsa)
+        depositarPapel  
+  fin
+variables
+  rp1,rp2: productor
+  rc1,rc2: consumidor
+comenzar
+  AsignarArea(rp1,areaP1)
+  AsignarArea(rp1,areaDeposito)
+  AsignarArea(rp2,areaP2)
+  AsignarArea(rp2,areaDeposito)
+  AsignarArea(rc1,areaC1)
+  AsignarArea(rc1,areaDeposito)
+  AsignarArea(rc2,areaC2)
+  AsignarArea(rc2,areaDeposito)
+  Iniciar(rp1,5,1)
+  Iniciar(rp2,10,1)
+  Iniciar(rc1,11,1)
+  Iniciar(rc2,12,1)
+fin
