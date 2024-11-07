@@ -1,0 +1,60 @@
+programa e3p4
+procesos
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  areaR1: AreaP(1,1,1,100)
+  areaR2: AreaP(2,1,2,100)
+  areaR3: AreaP(3,1,3,100)
+  areaRC: AreaP(100,100,100,100)
+robots
+  robot juntador
+  variables
+    id,aux,calles: numero
+  comenzar
+    RecibirMensaje(id,rc)
+    calles:=1
+    mientras(PosCa<100)
+      juntarPapeles
+      mover
+      calles:=calles+1
+      si(calles=5)
+        calles:=0
+        si(id=1)
+          EnviarMensaje(1,r2)
+          EnviarMensaje(1,r3)
+        sino
+          si(id=2)
+            EnviarMensaje(1,r3)
+            EnviarMensaje(1,r1)
+          sino
+            EnviarMensaje(1,r1)
+            EnviarMensaje(1,r2)        
+        repetir 2
+          RecibirMensaje(aux,*)
+    juntarPapeles
+  fin
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+variables
+  r1: juntador
+  r2: juntador
+  r3: juntador
+  rc: coordinador
+comenzar
+  AsignarArea(rc,areaRC)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  Iniciar(rc,100,100)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+fin
